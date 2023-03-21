@@ -1,12 +1,11 @@
 
 const timeOut= {timeout:1000000}
 
+beforeEach(() => {
+    cy.visit('https://swbt-43857.alpha.reportheld-saas.com/admin/main.html',timeOut)
+  })
+
 describe('SWBT Assessment', ()=>{
-
-    beforeEach(() => {
-        cy.visit('https://swbt-43857.alpha.reportheld-saas.com/admin/main.html',timeOut)
-      })
-
 
 it('Login Valid Credentials',()=>{
 
@@ -26,7 +25,50 @@ it('Login Invalid Credentials',()=>{
 
     })
 
+    describe('SWBT Assessment', ()=>{
+    beforeEach(() => {
+        cy.visit('https://swbt-43857.alpha.reportheld-saas.com/admin/main.html',timeOut)
+    })
+    it('Create User',()=>{
 
+        cy.get('#username',timeOut).should('be.visible').type('swbt-it-admin')  //Enter Valid Username
+        cy.get('#password',timeOut).should('be.visible').type('testOJT**123')//Enter Valid Password
+        cy.get('#login',timeOut).should('be.visible').click() //Click Login
+        cy.get('.wrapper > .inner',timeOut).should('be.visible').and('contain','Please be patient while data is loaded completely',timeOut) //Verifying if succefully login
+        
+        cy.wait(150000) //waiting for the loading to be done before executing next step
+        
+        //Create User
+        cy.get('.users',timeOut).click() //Click Create User Icon
+        cy.get(':nth-child(2) > .recommended-input',timeOut).should('be.visible').type('Saiiirel Cabahaga')//Input User Username
+        cy.get(':nth-child(3) > .recommended-input',timeOut).should('be.visible').type('12345678')//Input User Password
+        cy.contains('First Name').parent().within(() => {cy.get('input', timeOut).should('be.visible').first().type('Saiiirel');}); //Input User Firstname
+        cy.get('.recommended-input',timeOut).should('be.visible').eq(1).type('Cabahaga'); //Input User Lastname 
+        cy.get('[type="date"]',timeOut).should('be.visible').type('2001-07-12')//Input User Birthdate
+        cy.get('[data-bind="value: email"]',timeOut).should('be.visible').type('scabahaga@ssct.edu.ph') //Input User Email Add
+        cy.get('[data-bind="value: phone"]').should('be.visible').type('09505001514')//Input User Contact Number
+    
+        //Choose User Primary Group
+        cy.get('.recommended-input-primary-group > .btn-group > .btn > .filter-option',timeOut).should('be.visible').click()
+        cy.get('.recommended-input-primary-group > .btn-group > .open > .dropdown-menu > [data-original-index="1"] > a > .text',timeOut).should('be.visible').click()
+        
+        //Choose User Configuration Preset
+        cy.get(':nth-child(8) > .btn-group > .btn > .filter-option',timeOut).should('be.visible').click()
+        cy.get(':nth-child(8) > .btn-group > .open > .dropdown-menu > .selected > a',timeOut).should('be.visible').click()
+        
+        //Choose Additional Group
+        cy.get('.item-with-add-button > .btn-group > .btn',timeOut).should('be.visible').click()
+        cy.get('.item-with-add-button > .btn-group > .open > .dropdown-menu > [data-original-index="2"] > a',timeOut).should('be.visible').click()
+        cy.get('.item-with-add-button > .groupxs-btn',timeOut).should('be.visible').click()
+    
+        //Save All Inputs
+        cy.contains('Save',timeOut).should('be.visible').click()
+        cy.get('.wrapper',timeOut).should('be.visible').and('contain','Are you sure you want to create new user?')//Confirm Inputs
+        cy.get('[data-bind="visible: !hideOkButton()"] > .second > .btn',timeOut) .should('be.visible').click()//Click the OK button
+
+        })
+
+    })
 /*
     it('Create New User',()=>{
 
