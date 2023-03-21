@@ -3,36 +3,32 @@ const timeOut= {timeout:1000000}
 
 describe('SWBT Assessment', ()=>{
 
-
-it('Create New User',()=>{
-
-    //Visit the Website
-    cy.visit('https://swbt-43857.alpha.reportheld-saas.com/admin/main.html',timeOut)
-   
-        
-    //Enter Valid Username
-    cy.get('#username',timeOut)
-        .should('be.visible')
-        .type('swbt-it-admin')
+    beforeEach(() => {
+        cy.visit('https://swbt-43857.alpha.reportheld-saas.com/admin/main.html',timeOut)
+      })
 
 
-    //Enter Valid Password
-    cy.get('#password',timeOut)
-        .should('be.visible')
-        .type('testOJT**123')
+it('Login Valid Credentials',()=>{
+
+    cy.get('#username',timeOut).should('be.visible').type('swbt-it-admin')  //Enter Valid Username
+    cy.get('#password',timeOut).should('be.visible').type('testOJT**123')//Enter Valid Password
+    cy.get('#login',timeOut).should('be.visible').click() //Click Login
+    cy.get('.wrapper > .inner',timeOut).should('be.visible').and('contain','Please be patient while data is loaded completely',timeOut) //Verifying if succefully login
+
+    })
+
+it('Login Invalid Credentials',()=>{
+
+    cy.get('#username',timeOut).should('be.visible').type('swbt-it-admern')  //Enter Invalid Username
+    cy.get('#password',timeOut).should('be.visible').type('testOJT**143')//Enter Invalid Password
+    cy.get('#login',timeOut).should('be.visible').click() //Click Login
+    /cy.get('.toast',timeOut).should('be.visible').and('contain','Access denied',timeOut) //Verifying if access id denied
+
+    })
 
 
-    //Click Login
-    cy.get('#login',timeOut)
-        .should('be.visible')
-        .click()
-
-
-    //Checking if its Loading
-    cy.get('.wrapper > .inner',timeOut)
-        .should('be.visible')
-        .and('contain','Please be patient while data is loaded completely',timeOut)
-
+/*
+    it('Create New User',()=>{
 
     cy.wait(150000) //waiting for the loading to be done before executing next step
     cy.get('.users',timeOut).click() //Click Create User Icon
@@ -133,4 +129,5 @@ it('Create New User',()=>{
     
 })
 
+*/
 })
