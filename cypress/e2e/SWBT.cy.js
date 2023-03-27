@@ -36,10 +36,12 @@ it('Create User', function(){
        
     createUser.enternewUsername('Sasai Cabahaga',timeOut)
     createUser.enternewPassword('12345678',timeOut)
-    createUser.clickLogin()
 
-    cy.contains('First Name').parent().within(() => { cy.get('input',timeOut).first().type('Saiiirel');});
-    cy.get('.recommended-input',timeOut).should('be.visible').eq(1) .type('Cabahaga');
+    createUser.enterFirstName('sairel')
+    // cy.contains('First Name').parent().within(() => { cy.get('input',timeOut).first().type('Saiiirel');});
+
+    createUser.enterLastName('cabahags')
+    // cy.get('.recommended-input',timeOut).should('be.visible').eq(1) .type('Cabahaga');
 
     createUser.enterbirthdate('2001-07-12',timeOut)
     createUser.enteremail('scabahaga@ssct.edu.ph',timeOut)

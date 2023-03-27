@@ -34,6 +34,12 @@ enterUsername(username){
 enterPassword(password){
     cy.get(this.password_textbox,timeOut).type(password)
 }
+enterFirstName(firstname){
+    cy.contains('First Name').parent().within(() => { cy.get('input',timeOut).first().type(firstname);});
+}
+enterLastName(lastname){
+    cy.get('.recommended-input',timeOut).should('be.visible').eq(1) .type(lastname);
+}
 clickLogin(){
     cy.get(this.login_button).click()
 }
